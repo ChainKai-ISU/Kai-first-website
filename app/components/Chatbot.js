@@ -5,6 +5,21 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+// Update the message styling
+const Message = ({ message, isBot }) => (
+    <div className={`flex ${isBot ? 'justify-start' : 'justify-end'} mb-4`}>
+        <div
+            className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                isBot
+                    ? 'bg-indigo-100 text-indigo-900'
+                    : 'bg-purple-100 text-purple-900'
+            }`}
+        >
+            {message}
+        </div>
+    </div>
+);
+
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
@@ -87,83 +102,50 @@ export default function Chatbot() {
     };
 
     return (
-        <div className="fixed bottom-4 right-4 z-50">
-            {/* 聊天機器人按鈕 */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="bg-green-600 text-white p-4 rounded-lg shadow-lg hover:bg-green-700 transition-colors duration-200"
-            >
-                <FontAwesomeIcon icon={faRobot} className="w-6 h-6" />
-            </button>
-
-            {/* 聊天視窗 */}
-            {isOpen && (
-                <div className="absolute bottom-20 right-0 w-96 bg-green-50 rounded-lg shadow-xl">
-                    {/* 視窗標題 */}
-                    <div className="flex justify-between items-center p-4 bg-gradient-to-br from-green-500 to-green-700 text-white rounded-t-lg">
-                        <div className="flex items-center gap-2">
-                            <FontAwesomeIcon icon={faRobot} className="w-5 h-5" />
-                            <span className="font-medium">義守資工系客服</span>
+        <div className="fixed bottom-4 right-4 w-96">
+            <div className="bg-white rounded-lg shadow-lg">
+                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 rounded-t-lg">
+                    <h2 className="text-lg font-semibold">智慧客服</h2>
+                </div>
+                
+                <div className="h-96 p-4 overflow-y-auto bg-gray-50">
+                    {messages.map((msg) => (
+                        <Message
+                            key={msg.id}
+                            message={msg.text}
+                            isBot={msg.isBot}
+                        />
+                    ))}
+                    {isLoading && (
+                        <div className="flex justify-start mb-4">
+                            <div className="bg-indigo-100 text-indigo-900 rounded-lg px-4 py-2">
+                                思考中...
+                            </div>
                         </div>
+                    )}
+                </div>
+
+                <form onSubmit={handleSubmit} className="p-4 border-t">
+                    <div className="flex gap-2">
+                        <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            placeholder="請輸入您的問題..."
+                            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            disabled={isLoading}
+                        />
                         <button
-                            onClick={() => setIsOpen(false)}
-                            className="text-white hover:text-gray-200 transition-colors duration-200"
+                            type="submit"
+                            disabled={isLoading}
+                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <FontAwesomeIcon icon={faXmark} className="w-5 h-5" />
+                            發送
                         </button>
                     </div>
-
-                    {/* 訊息區域 */}
-                    <div className="h-96 overflow-y-auto p-4 space-y-4">
-                        {messages.map(message => (
-                            <div
-                                key={message.id}
-                                className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
-                            >
-                                <div
-                                    className={`max-w-[80%] p-3 ${
-                                        message.isBot
-                                            ? 'bg-gradient-to-br from-green-500 to-green-700 text-white rounded-tr-lg rounded-tl-lg rounded-br-lg'
-                                            : 'bg-gradient-to-br from-green-500 to-green-700 text-white rounded-tr-lg rounded-tl-lg rounded-bl-lg'
-                                    } ${message.isError ? 'from-red-500 to-red-700' : ''}`}
-                                >
-                                    {message.text}
-                                </div>
-                            </div>
-                        ))}
-                        {isLoading && (
-                            <div className="flex justify-start">
-                                <div className="bg-gray-100 text-gray-600 p-3 rounded-lg">
-                                    正在思考...
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* 輸入區域 */}
-                    <form onSubmit={handleSubmit} className="p-4 border-t border-green-200">
-                        <div className="flex gap-2">
-                            <input
-                                type="text"
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                placeholder="輸入訊息..."
-                                disabled={isLoading}
-                                className="flex-1 px-4 py-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
-                            />
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="px-4 py-2 bg-gradient-to-br from-green-500 to-green-700 text-white rounded-lg hover:from-green-600 hover:to-green-800 transition-all duration-200 inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4" />
-                                送出
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
+                </form>
+            </div>
         </div>
     );
 } 

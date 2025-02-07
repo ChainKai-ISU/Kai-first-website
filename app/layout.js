@@ -23,31 +23,31 @@ function Navbar() {
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <a href="/" className="text-xl font-bold text-green-800">
+          <a href="/" className="text-xl font-bold text-indigo-800">
             教育資源平台
           </a>
           <div className="flex space-x-4">
             <a
               href="/about"
-              className="text-gray-600 hover:text-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              className="text-gray-600 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               關於本站
             </a>
             <a
               href="/faq"
-              className="text-gray-600 hover:text-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              className="text-gray-600 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               常見問答
             </a>
             <a
               href="/contact"
-              className="text-gray-600 hover:text-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              className="text-gray-600 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               聯絡資訊
             </a>
             <a
               href="/todo-list"
-              className="text-gray-600 hover:text-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              className="text-gray-600 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               待辦事項
             </a>
